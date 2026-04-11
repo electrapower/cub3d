@@ -34,7 +34,7 @@ static int	rgb_valid_chars(char *line)
 		if (line[i] != 'F' && line[i] != 'C' && line[i] != ' '
 			&& line[i] != ',' && !ft_isdigit(line[i]))
 		{
-			print_error("Invalid input for color\n");	
+			print_error("Invalid input for color\n");
 			return (0);
 		}
 		i++;

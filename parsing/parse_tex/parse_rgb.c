@@ -25,7 +25,7 @@ static int	array_size(char **arr)
 static char	**get_rgb_arr(char *line, char **rgb_arr)
 {
 	char	*trimmed_line;
-	
+
 	trimmed_line = ft_strtrim(line + 1, " "); 
 	if (!trimmed_line)
 		return (NULL);

@@ -20,7 +20,7 @@ CFLAGS		= -g -Wall -Wextra -Werror
 MLX_FLAGS	= -L$(MLX_DIR) -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm -lz
 
 LIBFT_DIR	= libft
-MLX_DIR		= mlx_linux
+MLX_DIR		= minilibx-linux
 GNL_DIR		= get_next_line
 PARSE_DIR	= parsing
 TEX_DIR		= parsing/parse_tex/
@@ -33,6 +33,12 @@ MLX			= $(MLX_DIR)/libmlx.a
 
 SRCS		= main.c \
 			  game_cleanup.c \
+			  game_init.c \
+			  game_init2.c \
+			  render_background.c \
+			  init_ray.c \
+			  ft_abs.c \
+			  textures.c \
 			  $(GNL_DIR)/get_next_line.c \
 			  $(GNL_DIR)/get_next_line_utils.c \
 			  $(TEX_DIR)/parse_color.c \

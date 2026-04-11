@@ -17,8 +17,8 @@ static int	has_config(t_config *config)
 	if (config)
 	{
 		return (config->north.path && config->south.path
-				&& config->west.path && config->east.path
-				&& config->floor_color &&config->ceiling_color);
+			&& config->west.path && config->east.path
+			&& config->floor_color && config->ceiling_color);
 	}
 	print_error("Texture values missing\n");
 	return (0);
@@ -46,9 +46,11 @@ static int	calculate_map_width(char **grid)
 }
 
 static int	parse_line(char *line, t_game *game)
-{	
+{
 	char	*trimmed_line;
 	int		ret;
+
+	ret = 0;
 
 	trimmed_line = ft_strtrim(line, "\n");
 	if (!trimmed_line)
@@ -63,14 +65,16 @@ static int	parse_line(char *line, t_game *game)
 		ret = parse_grid(line, &game->map);
 	else if (has_config(&game->config) && !is_map(trimmed_line))
 		ret = print_error_and_return("Invalid line in map\n", 0);
-	free(trimmed_line);	
+	else
+		ret = print_error_and_return("Configuration incomplete before map\n", 0);
+	free(trimmed_line);
 	return (ret);
 }
 
 t_game	*parse_file(int fd, t_game *game)
 {
 	char		*line;
-	
+
 	line = get_next_line(fd);
 	while (line)
 	{

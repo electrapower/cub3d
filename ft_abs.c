@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asalniko <asalniko@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/11 16:09:57 by asalniko          #+#    #+#             */
-/*   Updated: 2026/04/11 16:10:00 by asalniko         ###   ########.fr       */
+/*   Created: 2026/04/11 18:22:39 by asalniko          #+#    #+#             */
+/*   Updated: 2026/04/11 18:22:41 by asalniko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+double	ft_abs(double n)
 {
-	t_list	*last;
-
-	if (*lst)
-	{
-		last = *lst;
-		while (last->next)
-			last = last->next;
-		last->next = new;
-	}
-	else
-		*lst = new;
+	if (n < 0)
+		return (-n);
+	return (n);
 }

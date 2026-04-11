@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "cub3d.h"
+#include "mlx.h"
 
 // void	print_config_elements(t_config *config)
 // {
@@ -67,16 +69,16 @@ static int	calculate_map_height(char *arg, t_game *game)
 	return (1);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	int		fd;
 	t_game	*game;
-	
+
 	if (argc != 2)
 		return (print_error_and_return("Invalid number of arguments\n", 1));
 	game = ft_calloc(1, sizeof(t_game));
 	if (!game)
-		return(print_error("Malloc failed\n"), 1);
+		return (print_error("Malloc failed\n"), 1);
 	if (!calculate_map_height(argv[1], game))
 		return (1);
 	fd = open(argv[1], O_RDONLY);
@@ -87,8 +89,16 @@ int main(int argc, char *argv[])
 		close(fd);
 		return (1);
 	}
-	// print_game(game);
+	if (!init_game(game))
+		return (close(fd), deep_free_game(game), 1);
+	if (!init_image(game))
+		return (close(fd), deep_free_game(game), 1);
+	if (!load_textures(game))
+		return (close(fd), deep_free_game(game), 1);
 	close(fd);
+	mlx_loop_hook(game->mlx, render_loop, game);
+	mlx_loop(game->mlx);
 	deep_free_game(game);
 	return (0);
 }
+
