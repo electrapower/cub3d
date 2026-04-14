@@ -14,6 +14,17 @@
 #include "cub3d.h"
 #include "mlx.h"
 
+static int	is_walkable_cell(t_map *map, int x, int y)
+{
+	char	cell;
+
+	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
+		return (0);
+	cell = map->grid[y][x];
+	return (cell == '0' || cell == 'N' || cell == 'S'
+		|| cell == 'E' || cell == 'W');
+}
+
 void	move_player(t_game *game, double move)
 {
 	int	new_x;
@@ -21,9 +32,9 @@ void	move_player(t_game *game, double move)
 
 	new_x = (int)(game->player.x + game->player.dir_x * move);
 	new_y = (int)(game->player.y + game->player.dir_y * move);
-	if (game->map.grid[(int)game->player.y][new_x] != '1')
+	if (is_walkable_cell(&game->map, new_x, (int)game->player.y))
 		game->player.x += game->player.dir_x * move;
-	if (game->map.grid[new_y][(int)game->player.x] != '1')
+	if (is_walkable_cell(&game->map, (int)game->player.x, new_y))
 		game->player.y += game->player.dir_y * move;
 }
 
@@ -34,9 +45,8 @@ void	strafe_player(t_game *game, double move)
 
 	new_x = (int)(game->player.x + game->player.plane_x * move);
 	new_y = (int)(game->player.y + game->player.plane_y * move);
-	if (game->map.grid[(int)game->player.y][new_x] != '1')
+	if (is_walkable_cell(&game->map, new_x, (int)game->player.y))
 		game->player.x += game->player.plane_x * move;
-	if (game->map.grid[new_y][(int)game->player.x] != '1')
+	if (is_walkable_cell(&game->map, (int)game->player.x, new_y))
 		game->player.y += game->player.plane_y * move;
 }
-

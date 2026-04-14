@@ -70,9 +70,10 @@ void	draw_textured_line(t_game *game, int x, t_ray *ray, t_texture *tex)
 		ray->tex_y = (int)ray->tex_pos;
 		if (ray->tex_y < 0)
 			ray->tex_y = 0;
-		if (ray->tex_y >= tex->height)
-			ray->tex_y = tex->height - 1;
-		color = tex->data[ray->tex_y * (tex->line_len / 4) + ray->tex_x];
+		if (ray->tex_y >= tex->img.height)
+			ray->tex_y = tex->img.height - 1;
+		color = ((int *)tex->img.addr)[ray->tex_y * (tex->img.line_len / 4)
+			+ ray->tex_x];
 		put_pixel(&game->img, x, y, color);
 		ray->tex_pos += ray->step;
 		y++;
@@ -102,4 +103,3 @@ void	render_frame(t_game *game)
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
-

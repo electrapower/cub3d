@@ -17,14 +17,14 @@ static void	cleanup_config(t_config *config, void *mlx)
 {
 	if (!config)
 		return ;
-	if (mlx && config->north.img)
-		mlx_destroy_image(mlx, config->north.img);
-	if (mlx && config->south.img)
-		mlx_destroy_image(mlx, config->south.img);
-	if (mlx && config->west.img)
-		mlx_destroy_image(mlx, config->west.img);
-	if (mlx && config->east.img)
-		mlx_destroy_image(mlx, config->east.img);
+	if (mlx && config->north.img.img)
+		mlx_destroy_image(mlx, config->north.img.img);
+	if (mlx && config->south.img.img)
+		mlx_destroy_image(mlx, config->south.img.img);
+	if (mlx && config->west.img.img)
+		mlx_destroy_image(mlx, config->west.img.img);
+	if (mlx && config->east.img.img)
+		mlx_destroy_image(mlx, config->east.img.img);
 	free(config->north.path);
 	free(config->south.path);
 	free(config->west.path);

@@ -49,12 +49,24 @@ static void	assign_rgb(t_rgb *rgb, int i, int val)
 		rgb->b = val;
 }
 
+static int	parse_rgb_item(char **rgb_arr, t_rgb *rgb, int i)
+{
+	char	*temp;
+	int		val;
+
+	temp = ft_strtrim(rgb_arr[i], " ");
+	if (!temp)
+		return (0);
+	val = ft_atoi(temp);
+	assign_rgb(rgb, i, val);
+	free(temp);
+	return (1);
+}
+
 int	get_rgb_val(char *line, t_rgb *rgb)
 {
 	char	**rgb_arr;
-	char	*temp;
 	int		i;
-	int		val;
 
 	rgb_arr = NULL;
 	i = 0;
@@ -65,12 +77,11 @@ int	get_rgb_val(char *line, t_rgb *rgb)
 		return (clean_and_return(rgb_arr));
 	while (i < 3)
 	{
-		temp = ft_strtrim(rgb_arr[i], " ");
-		if (!temp)
+		if (!parse_rgb_item(rgb_arr, rgb, i))
+		{
+			rgb_arr_cleanup(rgb_arr);
 			return (0);
-		val = ft_atoi(temp);
-		assign_rgb(rgb, i, val);
-		free(temp);
+		}
 		i++;
 	}
 	rgb_arr_cleanup(rgb_arr);

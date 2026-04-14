@@ -45,7 +45,7 @@ int	init_game(t_game *game)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		return (print_error_and_return("MLX init failed\n", 0));
-	game->win = mlx_new_window(game->mlx, WIN_WIDTH, WIN_HEIGHT, "cub3d");
+	game->win = mlx_new_window(game->mlx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	if (!game->win)
 		return (print_error_and_return("Window creation failed\n", 0));
 	mlx_hook(game->win, 17, 0, close_game, game);
@@ -75,4 +75,3 @@ void	rotate_player(t_game *game, double angle)
 	game->player.plane_y = old_plane_x * sin(angle)
 		+ game->player.plane_y * cos(angle);
 }
-

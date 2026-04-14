@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   init_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalniko <asalniko@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: asalniko <asalniko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:29:02 by asalniko          #+#    #+#             */
-/*   Updated: 2026/04/11 18:29:04 by asalniko         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:59:01 by asalniko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "cub3d.h"
+
+static int	is_wall_or_invalid(t_map *map, int x, int y)
+{
+	char	cell;
+
+	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
+		return (1);
+	cell = map->grid[y][x];
+	return (cell == '1' || cell == ' ');
+}
 
 void	init_ray(t_game *game, t_ray *ray, int x)
 {
@@ -73,31 +83,7 @@ void	perform_dda(t_game *game, t_ray *ray)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (game->map.grid[ray->map_y][ray->map_x] == '1')
+		if (is_wall_or_invalid(&game->map, ray->map_x, ray->map_y))
 			ray->hit = 1;
 	}
 }
-
-void	calculate_wall_projection(t_game *game, t_ray *ray)
-{
-	if (ray->side == 0)
-		ray->dist = ray->side_x - ray->delta_x;
-	else
-		ray->dist = ray->side_y - ray->delta_y;
-	if (ray->dist <= 0)
-		ray->dist = 0.1;
-	ray->height = (int)(WIN_HEIGHT / ray->dist);
-	ray->start = -ray->height / 2 + WIN_HEIGHT / 2;
-	ray->end = ray->height / 2 + WIN_HEIGHT / 2;
-	(void)game;
-}
-
-void	calculate_wall_x(t_game *game, t_ray *ray)
-{
-	if (ray->side == 0)
-		ray->wall_x = game->player.y + ray->dist * ray->dir_y;
-	else
-		ray->wall_x = game->player.x + ray->dist * ray->dir_x;
-	ray->wall_x -= floor(ray->wall_x);
-}
-

@@ -32,7 +32,9 @@ static int	one_player_check(t_map *map)
 		}
 		i++;
 	}
-	if (count != 1)
+	if (count == 0)
+		return (print_error_and_return("Map has no player\n", 0));
+	if (count > 1)
 		return (print_error_and_return("Map has more than one player\n", 0));
 	return (1);
 }
@@ -110,8 +112,7 @@ int	validate_map(t_map *map, t_player *player)
 	grid_copy = ft_calloc((map->height + 1), sizeof(char *));
 	if (!grid_copy)
 		return (print_error_and_return("Malloc failed\n", 0));
-	copy_grid(map, grid_copy);
-	if (!grid_copy)
+	if (!copy_grid(map, grid_copy))
 		return (0);
 	if (!one_player_check(map))
 		return (clean_up_grid_copy(grid_copy), 0);

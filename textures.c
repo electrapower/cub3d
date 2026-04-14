@@ -16,13 +16,13 @@
 
 static int	load_texture(t_game *game, t_texture *tex)
 {
-	tex->img = mlx_xpm_file_to_image(game->mlx, tex->path,
-			&tex->width, &tex->height);
-	if (!tex->img)
+	tex->img.img = mlx_xpm_file_to_image(game->mlx, tex->path,
+			&tex->img.width, &tex->img.height);
+	if (!tex->img.img)
 		return (0);
-	tex->data = (int *)mlx_get_data_addr(tex->img, &tex->bpp,
-			&tex->line_len, &tex->endian);
-	if (!tex->data)
+	tex->img.addr = mlx_get_data_addr(tex->img.img, &tex->img.bpp,
+			&tex->img.line_len, &tex->img.endian);
+	if (!tex->img.addr)
 		return (0);
 	return (1);
 }
@@ -55,17 +55,16 @@ t_texture	*get_wall_texture(t_game *game, t_ray *ray)
 
 void	calculate_tex_x(t_texture *tex, t_ray *ray)
 {
-	ray->tex_x = (int)(ray->wall_x * (double)tex->width);
+	ray->tex_x = (int)(ray->wall_x * (double)tex->img.width);
 	if (ray->side == 0 && ray->dir_x > 0)
-		ray->tex_x = tex->width - ray->tex_x - 1;
+		ray->tex_x = tex->img.width - ray->tex_x - 1;
 	if (ray->side == 1 && ray->dir_y < 0)
-		ray->tex_x = tex->width - ray->tex_x - 1;
+		ray->tex_x = tex->img.width - ray->tex_x - 1;
 }
 
 void	calculate_tex_y(t_texture *tex, t_ray *ray)
 {
-	ray->step = 1.0 * tex->height / ray->height;
+	ray->step = 1.0 * tex->img.height / ray->height;
 	ray->tex_pos = (ray->start - WIN_HEIGHT / 2 + ray->height / 2)
 		* ray->step;
 }
-

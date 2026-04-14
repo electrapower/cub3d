@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkovacev <jkovacev@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: asalniko <asalniko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 14:37:40 by jkovacev          #+#    #+#             */
-/*   Updated: 2026/02/17 10:43:41 by jkovacev         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:52:00 by asalniko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,42 @@
 # define FOV2 30
 # define PI 3.14159265358979323846
 
-# define KEY_ESC 65307
-# define KEY_LEFT 65361
-# define KEY_RIGHT 65363
-# define KEY_W 119
-# define KEY_A 97
-# define KEY_S 115
-# define KEY_D 100
+# ifdef __APPLE__
+#  define KEY_ESC 53
+#  define KEY_LEFT 123
+#  define KEY_RIGHT 124
+#  define KEY_W 13
+#  define KEY_A 0
+#  define KEY_S 1
+#  define KEY_D 2
+# else
+#  define KEY_ESC 65307
+#  define KEY_LEFT 65361
+#  define KEY_RIGHT 65363
+#  define KEY_W 119
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
+# endif
 
 # include <math.h>
 # include <mlx.h>
 
-typedef struct s_texture
+typedef struct s_img
 {
-	char	*path;
 	void	*img;
-	int		*data;
-	int		width;
-	int		height;
+	char	*addr;
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		width;
+	int		height;
+}	t_img;
+
+typedef struct s_texture
+{
+	char	*path;
+	t_img	img;
 }	t_texture;
 
 typedef struct s_config
@@ -54,6 +69,8 @@ typedef struct s_config
 	t_texture	east;
 	int			floor_color;
 	int			ceiling_color;
+	int			floor_set;
+	int			ceiling_set;
 }	t_config;
 
 typedef struct s_player
@@ -83,7 +100,7 @@ typedef struct s_ray
 	double	delta_y;
 	double	dist;
 	double	wall_x;
-	int	tex_x;
+	int		tex_x;
 	double	step;
 	double	tex_pos;
 	int		tex_y;
@@ -98,15 +115,6 @@ typedef struct s_ray
 	int		end;
 }	t_ray;
 
-typedef struct s_img
-{
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}	t_img;
-
 typedef struct s_game
 {
 	t_config	config;
@@ -118,36 +126,33 @@ typedef struct s_game
 }	t_game;
 
 //init
-int		init_game(t_game *game);
-int		close_game(t_game *game);
-int		handle_key(int keycode, t_game *game);
-int		init_image(t_game *game);
+int			init_game(t_game *game);
+int			close_game(t_game *game);
+int			handle_key(int keycode, t_game *game);
+int			init_image(t_game *game);
 void		init_ray(t_game *game, t_ray *ray, int x);
-void	set_step_and_side_dist(t_game *game, t_ray *ray);
-void	perform_dda(t_game *game, t_ray *ray);
-void	calculate_wall_projection(t_game *game, t_ray *ray);
+void		set_step_and_side_dist(t_game *game, t_ray *ray);
+void		perform_dda(t_game *game, t_ray *ray);
+void		calculate_wall_projection(t_game *game, t_ray *ray);
 
-void	rotate_player(t_game *game, double angle);
-void	move_player(t_game *game, double move);
-void	strafe_player(t_game *game, double move);
-
+void		rotate_player(t_game *game, double angle);
+void		move_player(t_game *game, double move);
+void		strafe_player(t_game *game, double move);
 
 //render
-void	render_frame(t_game *game);
-int	render_loop(t_game *game);
+void		render_frame(t_game *game);
+int			render_loop(t_game *game);
 
-int	load_textures(t_game *game);
+int			load_textures(t_game *game);
 t_texture	*get_wall_texture(t_game *game, t_ray *ray);
+int			validate_args(int argc, char *path);
 
-void	calculate_wall_x(t_game *game, t_ray *ray);
-void	calculate_tex_x(t_texture *tex, t_ray *ray);
-void	calculate_tex_y(t_texture *tex, t_ray *ray);
-
-void	draw_textured_line(t_game *game, int x, t_ray *ray, t_texture *tex);
-
+void		calculate_wall_x(t_game *game, t_ray *ray);
+void		calculate_tex_x(t_texture *tex, t_ray *ray);
+void		calculate_tex_y(t_texture *tex, t_ray *ray);
+void		draw_textured_line(t_game *game, int x, t_ray *ray, t_texture *tex);
 
 //math
-double	ft_abs(double n);
+double		ft_abs(double n);
 
 #endif
-
