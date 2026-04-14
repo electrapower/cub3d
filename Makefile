@@ -14,7 +14,6 @@ GREEN = \033[0;32m
 BLUE  = \033[0;34m
 RESET = \033[0m
 
-UNAME_S		:= $(shell uname -s)
 NAME		= cub3D
 CC			= cc
 CFLAGS		= -g -Wall -Wextra -Werror
@@ -24,16 +23,9 @@ GNL_DIR		= get_next_line
 PARSE_DIR	= parsing
 TEX_DIR		= parsing/parse_tex
 OBJ_DIR		= obj
-
-ifeq ($(UNAME_S),Darwin)
-	MLX_DIR		= minilibx_mms
-	MLX			= $(MLX_DIR)/libmlx.dylib
-	MLX_FLAGS	= -L$(MLX_DIR) -lmlx "-Wl,-rpath,$(abspath $(MLX_DIR))" -lm
-else
-	MLX_DIR		= minilibx-linux
-	MLX			= $(MLX_DIR)/libmlx.a
-	MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
-endif
+MLX_DIR		= minilibx-linux
+MLX			= $(MLX_DIR)/libmlx.a
+MLX_FLAGS	= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 INCLUDES	= -I. -I$(LIBFT_DIR) -I$(MLX_DIR) -I$(GNL_DIR) -I$(PARSE_DIR) -I$(TEX_DIR)
 

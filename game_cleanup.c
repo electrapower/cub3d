@@ -58,5 +58,10 @@ void	deep_free_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->img.img);
 	if (game->mlx && game->win)
 		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
 	free(game);
 }
