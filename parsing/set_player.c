@@ -52,8 +52,10 @@ void	set_player(t_game *game)
 				game->player.x = (double)x + 0.5;
 				game->player.y = (double)y + 0.5;
 				set_player_dir(&game->player, game->map.grid[y][x]);
-				game->player.plane_x = -game->player.dir_y * 0.66;
-				game->player.plane_y = game->player.dir_x * 0.66;
+				game->player.plane_x = -game->player.dir_y
+				* tan((FOV * PI / 180.0) / 2.0);
+				game->player.plane_y = game->player.dir_x
+				* tan((FOV * PI / 180.0) / 2.0);
 				return ;
 			}
 			x++;

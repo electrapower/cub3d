@@ -51,7 +51,14 @@ static int	read_file_lines(int fd, t_game *game)
 	while (line)
 	{
 		if (!parse_line(line, game, &state))
-			return (free(line), 0);
+		{
+			while (line)
+			{
+				free(line);
+				line = get_next_line(fd);
+			}
+			return (0);
+		}
 		free(line);
 		line = get_next_line(fd);
 	}
